@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<body>
+<h1>Garage Door Status</h1>
+
+<pre id="status"></pre>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  function setStatus(isOpen) {
+    document.getElementById('status').innerText = isOpen ? 'Open' : 'Closed';
+  }
+  // Set up socket listeners
+  var socket = io();
+  socket.on('opened', function () {
+    setStatus(true);
+  });
+
+  socket.on('closed', function () {
+    setStatus(false);
+  });
+
+  // Request current status
+  function onStatusRetrieved (response) {
+    var statusObj = JSON.parse(this.responseText);
+    setStatus(statusObj.garage_door === 'open');
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.onload = onStatusRetrieved;
+  xhr.open('get', '/status', true);
+  xhr.send();
+</script>
+</body>
+</html>
