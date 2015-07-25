@@ -7,10 +7,6 @@ var GarageDoor = function GarageDoor() {
   this.isOpen = undefined;
 };
 
-GarageDoor.prototype.isOpen = function isOpen() {
-  return this.isOpen;
-};
-
 util.inherits(GarageDoor, EventEmitter);
 
 var instance;
