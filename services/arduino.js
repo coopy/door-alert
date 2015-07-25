@@ -12,10 +12,11 @@ exports.startListening = function startListening(eventEmitter, callback) {
     });
 
     arduinoPort.on('data', function(data) {
-      if (data[0] === 1) {
+      var value = data[0];
+      if (value === 0) {
         console.log('Garage door is closed')
         eventEmitter.emit('closed');
-      } else if (data[0] === 0) {
+      } else if (value === 1) {
         console.log('Garage door is open')
         eventEmitter.emit('opened');
       }
