@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/per-nilsson/door-alert",
   "dependencies": {
-    "serialport": "^1.7.4"
+    "serialport": "^1.7.4",
+    "twilio": "^2.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^0.24.1"
   }
 }

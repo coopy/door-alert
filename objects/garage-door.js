@@ -1,0 +1,56 @@
+var EventEmitter = require('events').EventEmitter;
+var util = require('util');
+var ArduinoService = require('../services/arduino');
+var TwilioService = require('../services/twilio');
+
+var GarageDoor = function GarageDoor() {
+  this.isOpen = undefined;
+};
+
+GarageDoor.prototype.isOpen = function isOpen() {
+  return this.isOpen;
+};
+
+util.inherits(GarageDoor, EventEmitter);
+
+var instance;
+
+GarageDoor.initialize = function initialize() {
+  if (instance) {
+    throw new Error('Already initialized');
+  }
+
+  instance = new GarageDoor();
+  instance.on('opened', function () {
+    instance.isOpen = true;
+    TwilioService.sendMessage('Garage door is open', function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  });
+
+  instance.on('closed', function () {
+    instance.isOpen = false;
+    TwilioService.sendMessage('Garage door is closed', function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  });
+
+  ArduinoService.startListening(instance, function(err) {
+    if (err) {
+      console.error(err);
+      throw err;
+    }
+  });
+
+  return instance;
+};
+
+GarageDoor.getInstance = function getInstance() {
+  return instance;
+};
+
+module.exports = GarageDoor;
