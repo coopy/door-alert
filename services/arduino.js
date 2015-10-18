@@ -1,25 +1,28 @@
 'use strict';
 
 var SerialPort = require('serialport').SerialPort;
+
+var log = require('./log').child({ service: 'Arduino' });
+
 var arduinoPort = new SerialPort('/dev/cu.usbserial-A6004oyH', {
   baudrate: 19200
 });
 
 exports.startListening = function startListening(eventEmitter, callback) {
   arduinoPort.on('open', function() {
-    console.log('Serial Port open');
+    log.info('Serial Port open');
 
     arduinoPort.on('close', function() {
-      console.log('Serial Port closed');
+      log.info('Serial Port closed');
     });
 
     arduinoPort.on('data', function(data) {
       var value = data[0];
       if (value === 0) {
-        console.log('Garage door is closed');
+        log.info('Garage door is closed')
         eventEmitter.emit('closed');
       } else if (value === 1) {
-        console.log('Garage door is open');
+        log.info('Garage door is open')
         eventEmitter.emit('opened');
       }
     });

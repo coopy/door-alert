@@ -5,6 +5,8 @@ var util = require('util');
 var ArduinoService = require('../services/arduino');
 var TwilioService = require('../services/twilio');
 
+var log = require('../services/log').child({ object: 'Garage Door' });
+
 var GarageDoor = function GarageDoor() {
   this.isOpen = undefined;
 };
@@ -15,7 +17,7 @@ var instance;
 
 GarageDoor.initialize = function initialize(sendMessage) {
   if (instance) {
-    throw new Error('Already initialized');
+    return log.error('Can\'t initialize – already initialized');
   }
 
   instance = new GarageDoor();
@@ -24,7 +26,7 @@ GarageDoor.initialize = function initialize(sendMessage) {
     if (sendMessage) {
       TwilioService.sendMessage('Garage door is open', function (err) {
         if (err) {
-          console.error(err);
+          log.error(err, 'Error calling TwilioService.sendMessage (opened)');
         }
       });
     }
@@ -35,7 +37,7 @@ GarageDoor.initialize = function initialize(sendMessage) {
     if (sendMessage) {
       TwilioService.sendMessage('Garage door is closed', function (err) {
         if (err) {
-          console.error(err);
+          log.error(err, 'Error calling TwilioService.sendMessage (closed)');
         }
       });
     }
@@ -43,7 +45,8 @@ GarageDoor.initialize = function initialize(sendMessage) {
 
   ArduinoService.startListening(instance, function(err) {
     if (err) {
-      console.error(err);
+      log.error(err, 'Error calling ArduinoService.startListening');
+      // TODO Catch error on top level and keep retrying
       throw err;
     }
   });

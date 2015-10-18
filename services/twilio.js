@@ -1,5 +1,6 @@
 'use strict';
 
+var log = require('./log').child({ service: 'Twilio' });
 var secrets = require('../.secrets.json');
 var twilioConfig = secrets.twilio;
 var client = require('twilio')(twilioConfig.id, twilioConfig.secret);
@@ -33,8 +34,9 @@ exports.sendMessage = function sendMessage (msg, callback) {
     //     "uri": "/2010-04-01/Accounts/AC5ef872f6da5a21de157d80997a64bd33/SMS/Messages/SM90c6fc909d8504d45ecdb3a3d5b3556e.json"
     // }
 
-    var log = 'Sent message to ' + response.to + ': "' + response.body + '"';
-    console.log(log);
+    log.info({ to: response.to, body: response.body }, 'Sent message');
+    // log.debug(response, 'response object');
+
     return callback(null, response);
   });
 };

@@ -6,6 +6,10 @@ var app = express();
 var http = require('http').Server(app); // eslint-disable-line new-cap
 var io = require('socket.io')(http);
 
+var log = require('../services/log').child({ service: 'top-level' });
+
+var port = 5001;
+
 var _garageDoor;
 
 function getResponseObject() {
@@ -23,7 +27,7 @@ exports.initialize = function initialize(garageDoor) {
   var server = http.listen(port, function () {
     var host = server.address().address;
 
-    console.log('Garage door app listening at http://%s:%s', host, port);
+    log.info('Garage door app listening at http://%s:%s', host, port);
 
     garageDoor.on('opened', function () {
       io.emit('opened', getResponseObject());
