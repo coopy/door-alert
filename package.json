@@ -21,7 +21,7 @@
   "homepage": "https://github.com/per-nilsson/door-alert",
   "dependencies": {
     "express": "^4.13.1",
-    "serialport": "^1.7.4",
+    "serialport": "^2.0.5",
     "socket.io": "^1.3.6",
     "twilio": "^2.2.1"
   },
