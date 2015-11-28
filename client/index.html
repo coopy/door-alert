@@ -23,7 +23,7 @@
   // Request current status
   function onStatusRetrieved (response) {
     var statusObj = JSON.parse(this.responseText);
-    setStatus(statusObj.garage_door === 'open');
+    setStatus(statusObj.garageDoor.isOpen);
   }
 
   var xhr = new XMLHttpRequest();

@@ -1,3 +1,5 @@
+'use strict';
+
 var secrets = require('../.secrets.json');
 var twilioConfig = secrets.twilio;
 var client = require('twilio')(twilioConfig.id, twilioConfig.secret);

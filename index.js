@@ -1,3 +1,5 @@
+'use strict';
+
 var API = require('./api');
 var GarageDoor = require('./objects/garage-door');
 
