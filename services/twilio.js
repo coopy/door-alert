@@ -6,12 +6,14 @@ var twilioConfig = secrets.twilio;
 var client = require('twilio')(twilioConfig.id, twilioConfig.secret);
 
 exports.sendMessage = function sendMessage (msg, callback) {
+  log.info({msg: msg}, 'Sending Twilio message');
   client.sendMessage({
     to: secrets.alert_targets.phone_number,
     from: twilioConfig.phone_number,
     body: msg
   }, function(err, response) {
     if (err) {
+      log.error({err: err}, 'Error sending Twilio message')
       return callback(err);
     }
 

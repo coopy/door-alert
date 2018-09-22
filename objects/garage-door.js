@@ -19,6 +19,7 @@ GarageDoor.initialize = function initialize(sendMessage) {
   if (instance) {
     return log.error('Can\'t initialize – already initialized');
   }
+  log.info('hello')
 
   instance = new GarageDoor();
   instance.on('opened', function () {
