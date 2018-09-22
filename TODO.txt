@@ -1,0 +1,7 @@
+List of things
+
+GARAGE DOOR ALERT
+- Send warning text if "serial port closed" or "Cannot open /dev/cu.usbserial-A6004oyH"
+- Do not crash if usb cannot open - instead retry every few seconds
+- Add timestamps to logs
+- Expose event history over http
